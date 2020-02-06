@@ -1,0 +1,33 @@
+http:
+  port: 8080
+apiEndpoints:
+  customers:
+    host: '*'
+    paths: '/customers'
+  products:
+    host: '*'
+    paths: '/products'
+serviceEndpoints:
+  urlCustomers:
+    url: 'http://localhost:3001/api/'
+  urlProducts:
+    url: 'http://localhost:3002/api/'
+policies:
+  - proxy
+pipelines:
+  customers:
+    apiEndpoints:
+      - customers
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: urlCustomers
+              changeOrigin: true
+  products:
+    apiEndpoints:
+      - products
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: urlProducts
+              changeOrigin: true
